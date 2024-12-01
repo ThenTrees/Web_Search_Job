@@ -3,6 +3,7 @@ package com.thentrees.lab_week5_www.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Candidate {
+public class Candidate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "can_id")
@@ -24,7 +25,7 @@ public class Candidate {
 
     @Column(columnDefinition = "varchar(255)", nullable = false, unique = true)
     private String email;
-
+    private String password;
     private LocalDate dob;
 
     @Column(columnDefinition = "varchar(7)", name="full_name")
@@ -34,9 +35,9 @@ public class Candidate {
     @JoinColumn(name = "address", nullable = false)
     private Address address;
 
-    @OneToMany(mappedBy = "candidate")
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
     private List<CandidateSkill> candidateSkills;
 
-    @OneToMany(mappedBy = "candidate")
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
     private List<Experience> experiences;
 }

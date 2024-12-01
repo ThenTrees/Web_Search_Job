@@ -31,4 +31,11 @@ public class Address {
 
     @Column(columnDefinition = "varchar(20)")
     private String number;
+
+    @OneToOne(mappedBy = "address")
+    private Candidate candidate;
+
+    @OneToOne(mappedBy = "address")
+    private Company company;
+
 }

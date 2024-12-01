@@ -1,11 +1,14 @@
 server:
   port: 8088
+  servlet:
+    session:
+      timeout: 12h
 
 spring:
   application:
     name: lab05
   datasource:
-      url: jdbc:mysql://localhost:3306/lab05?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      url: jdbc:mysql://localhost:3306/lab05
       username: root
       password: root
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -14,3 +17,8 @@ spring:
       ddl-auto: update
     generate-ddl: true
     show-sql: true
+  session:
+    store-type: none
+
+api:
+  prefix: /api/v1

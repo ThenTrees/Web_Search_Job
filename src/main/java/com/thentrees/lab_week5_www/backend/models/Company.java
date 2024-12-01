@@ -24,8 +24,8 @@ public class Company {
     @Column( columnDefinition = "varchar(2000)")
     private String about;
 
-    @ManyToOne
-    @JoinColumn(name = "address")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address", nullable = false)
     private Address address;
 
     @Column( columnDefinition = "varchar(255)")

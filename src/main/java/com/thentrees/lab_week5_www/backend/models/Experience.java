@@ -3,6 +3,7 @@ package com.thentrees.lab_week5_www.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Experience {
+public class Experience implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exp_id")
