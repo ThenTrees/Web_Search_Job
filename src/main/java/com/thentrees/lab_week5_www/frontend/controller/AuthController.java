@@ -85,6 +85,6 @@ public class AuthController {
     @GetMapping("/logout")
     public String logout() {
         session.invalidate(); // Xóa toàn bộ session
-        return "redirect:/home"; // Chuyển hướng về trang login
+        return "redirect:/"; // Chuyển hướng về trang login
     }
 }

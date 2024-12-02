@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <title>List Company</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .bg-custom {
+      background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(255, 165, 0, 1)); /* Gradient từ đen sang cam */
+    }
+    .input-large {
+      width: 100%; /* Chiều rộng 100% của phần tử cha */
+      height: 60px; /* Chiều cao 50px */
+      font-size: 18px; /* Kích thước chữ 18px */
+      padding: 10px; /* Khoảng cách trong input */
+      border: none;
+      outline: none;
+    }
+    .carousel-inner .card-img-top {
+      height: 500px; /* Chiều cao cố định */
+      width: 100%; /* Chiều rộng tự động */
+      object-fit: cover; /* Cắt ảnh để phù hợp khung hình */
+    }
+
+  </style>
+</head>
+<body>
+<div class="container text-center p-3">
+<!--  find company section -->
+  <div class="input-group mb-3 border border-danger rounded-3 input-large row">
+    <div class="col-2">
+      <select class="form-select" aria-label="City">
+        <option selected>City</option>
+        <option value="1">Ha Noi</option>
+        <option value="2">Da Nang</option>
+        <option value="3">Ho Chi Minh</option>
+      </select>
+    </div>
+    <div class="col-8">
+      <input type="text" class="form-control" placeholder="Search">
+    </div>
+    <div  class="col-2">
+      <button class="btn btn-success" type="submit">Search</button>
+    </div>
+  </div>
+<!--  filter company section-->
+  <div class="row p-3 border border-danger">
+      <div class="col-6 border-end border-danger">
+        <dt>Cong Ty Hang Dau</dt>
+      </div>
+      <div class="col-6 border-start border-danger">
+        <dt>Cong Ty Dang Cho Don Ban</dt>
+      </div>
+  </div>
+  <dt class="text-start p-3">Cong Ty Hang Dau</dt>
+<!--  top company section -->
+
+    <!-- Carousel -->
+    <div id="topCompany" class="carousel slide" data-bs-ride="carousel">
+
+      <!-- Indicators/dots -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#topCompany" data-bs-slide-to="0" class="active bg-secondary"></button>
+        <button type="button" data-bs-target="#topCompany" data-bs-slide-to="1" class="bg-secondary"></button>
+        <button type="button" data-bs-target="#topCompany" data-bs-slide-to="2" class="bg-secondary"></button>
+      </div>
+
+      <!-- The slideshow/carousel -->
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="card mb-3">
+            <img src="https://www.sacombank.com.vn/content/dam/sacombank/images/tin-tuc/import/5957/imagestand/UuDaiThanhToanQuocTe2021_banner.jpg" class="card-img-top d-block w-100" alt="Sacombank image">
+            <div class="card-body">
+              <h5 class="card-title">Sacombank</h5>
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="card mb-3">
+            <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E" class="card-img-top d-block w-100" alt="TP Bang image">
+            <div class="card-body">
+              <h5 class="card-title">TP BANK</h5>
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="card mb-3">
+            <img src="https://techcombank.com/content/dam/techcombank/public-site/articles/non-blog/Banner-cashback-ther-VISA-c6315ae326.jpg" class="card-img-top d-block w-100" alt="Techcombank image">
+            <div class="card-body">
+              <h5 class="card-title">Techcombank</h5>
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left and right controls/icons -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#topCompany" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#topCompany" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  <dt class="text-start p-3">Cong Ty Danh Cho Ban</dt>
+<!--  list company section -->
+  <div class="row">
+    <div class="col">
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+<!-- Footer inclusion -->
+<div th:replace="components/footer.html"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

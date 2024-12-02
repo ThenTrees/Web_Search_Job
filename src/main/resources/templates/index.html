@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-6">
                 <div class="row d-flex justify-content-end g-3" th:if="${candidate}"> <!-- check co dang nhap hay chua, neu chua thi co nut dang nhap va dang ki -->
-                    <p class="col-md-3" th:text="${candidate.getFullName()}"></p>
+                    <a class="col-md-3" th:text="${candidate.getFullName()}" href="/profile"></a>
                     <a href="/api/v1/auth/logout" class="text-decoration-none col-md-3 btn btn-danger">Logout</a>
                 </div>
                 <div class="row d-flex justify-content-end g-3" th:unless="${candidate}"> <!-- check co dang nhap hay chua, neu chua thi co nut dang nhap va dang ki -->
