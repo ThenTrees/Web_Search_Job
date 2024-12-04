@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <title>Job Detail</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .img-logo{
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .bg-custom{
+      background-color: #edfbff;
+      border-radius: 10px;
+      margin: 5px;
+    }
+    .skill-name:hover {
+      border: 1px solid #154bb4;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="~{components/header.html}" th:with="candidate=${candidate}"></div>
+<div class="container text-center">
+  <div class="row text-start">
+    <div class="card col-md-9 me-4">
+      <div class="row g-0">
+        <div class="col-md-3 d-flex justify-content-center align-items-center">
+          <img class="rounded mx-auto d-block img-logo" src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E" alt="logo company" >
+        </div>
+        <div class="col-md-9">
+          <div class="card-body">
+            <h5 class="card-title" th:text="${job.getName()}"></h5>
+            <p class="card-text text-secondary" th:text="${job.getCompany().getName()}"></p>
+            <p class="card-text" th:text="${job.getCompany().getAddress().toString()}"></p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col ms-n3">
+          <dt class="text-center text-danger">Mô tả công việc</dt>
+          <div class="row border-danger border-top border-4 text-start">
+            <p class="text-break" th:text="${job.getDescription()}"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col border rounded">
+      <dt class="text-center mt-1">Thông tin chung</dt>
+      <hr>
+      <dt>Cấp bậc</dt>
+      <dd>level</dd>
+      <dt>Các công nghệ sử dụng</dt>
+      <div class="row d-flex flex-row justify-content-start align-items-center"  style="font-size: 13px">
+        <div class="col-auto bg-custom p-1 ms-2 skill-name" th:each="jobSkill : ${jobSkills}">
+          <span th:text="${jobSkill.getSkill().getSkillName()}" style="color: #154bb4"></span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button type="button" class="btn btn-danger mt-3 w-100 p-2">Ứng tuyển</button>
+    </div>
+  </div>
+</div>
+<!-- Footer inclusion -->
+<div th:replace="~{components/footer.html}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
