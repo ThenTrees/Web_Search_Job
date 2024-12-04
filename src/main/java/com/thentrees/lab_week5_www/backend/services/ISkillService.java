@@ -12,4 +12,7 @@ public interface ISkillService {
     void deleteSkill(Long id);
     Skill getSkillById(Long id);
     List<Skill> getAllSkills();
+
+    // get all skills by job id
+    List<Skill> getAllSkillsByJobId(Long jobId);
 }

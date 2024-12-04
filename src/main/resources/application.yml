@@ -1,9 +1,5 @@
 server:
   port: 8088
-  servlet:
-    session:
-      timeout: 12h
-
 spring:
   application:
     name: lab05
@@ -15,10 +11,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: true
     generate-ddl: true
     show-sql: true
-  session:
-    store-type: none
 
 api:
   prefix: /api/v1
+
+logging:
+  level:
+    org:
+      springframework.security: DEBUG

@@ -45,4 +45,9 @@ public class SkillService implements ISkillService {
     public List<Skill> getAllSkills() {
         return skillRepository.findAll();
     }
+
+    @Override
+    public List<Skill> getAllSkillsByJobId(Long jobId) {
+        return List.of();
+    }
 }

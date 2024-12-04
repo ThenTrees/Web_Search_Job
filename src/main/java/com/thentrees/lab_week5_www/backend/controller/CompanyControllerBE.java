@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("${api.prefix}/companies")
 @RequiredArgsConstructor
-public class CompanyController {
+public class CompanyControllerBE {
 
     private final ICompanyService companyService;
 

@@ -3,6 +3,7 @@ package com.thentrees.lab_week5_www.backend.dto.response;
 import com.thentrees.lab_week5_www.backend.models.Address;
 import com.thentrees.lab_week5_www.backend.models.CandidateSkill;
 import com.thentrees.lab_week5_www.backend.models.Experience;
+import com.thentrees.lab_week5_www.backend.models.Role;
 import lombok.*;
 
 import java.io.Serializable;
@@ -23,4 +24,6 @@ public class CandidateResponseDto implements Serializable {
     private Address address;
     private List<Experience> experiences;
     private List<CandidateSkill> skills;
+    private boolean active;
+    private Role role;
 }

@@ -19,4 +19,5 @@ public interface IJobService {
     Job getJobById(Long id);
 
     List<Job> getAllJobs();
+    List<Job> getAllJobByCompanyId(Long companyId);
 }

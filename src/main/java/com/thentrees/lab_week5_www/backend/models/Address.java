@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString(exclude = {"candidate", "company"})
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +38,10 @@ public class Address {
 
     @OneToOne(mappedBy = "address")
     private Company company;
+
+    @Override
+    public String toString() {
+        return String.format("%s %s %s %s", number, street, city, CountryCode.getByCode(country).getName());
+    }
 
 }
