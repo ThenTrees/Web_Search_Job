@@ -24,14 +24,12 @@
              height: auto;
              object-fit: cover;
          }
-
-
-
     </style>
 </head>
 <body>
-<!-- Begin header section -->
-<div th:replace="~{components/header.html}" th:with="candidate=${candidate}"></div>
+<!-- Begin navbar section -->
+<div th:replace="~{layout :: page_navbar}"></div>
+
 
 <div class="container-fluid">
     <div class="row bg-custom text-white">
@@ -60,33 +58,54 @@
     <h1 class="text-center">List Job</h1>
     <div class="container text-start">
         <div class="card mb-3" th:each="job : ${jobs}">
-            <div class="job-container row g-0 job" th:attr="data-id=${job.getId()}">
-                <div class="col-md-3 d-flex justify-content-center align-items-center">
-                    <img class="rounded mx-auto d-block img-logo" src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E" alt="logo company" >
-                </div>
-                <div class="col-md-7">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${job.getName()}"></h5>
-                        <p class="card-text" th:text="${job.getDescription()}"></p>
-                        <p class="card-text" th:text="${job.getCompany().getName()}"></p>
-                        <!--   skill-->
-                        <div class="row d-flex flex-row justify-content-start align-items-center"  style="font-size: 13px">
-                            <div class="col-auto bg-info border rounded p-1 ms-2 skill-name" th:each="jobSkill : ${job.getJobSkills()}">
-                                <span th:text="${jobSkill.getSkill().getSkillName()}" style="color: #154bb4"></span>
+            <div class=" row job">
+                <div class="col-10 job-container" th:attr="data-id=${job.getId()}">
+                    <div class="row">
+                        <div class="col-md-3 d-flex justify-content-center align-items-center">
+                            <img class="rounded mx-auto d-block img-logo" src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E" alt="logo company" >
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${job.getName()}"></h5>
+                                <p class="card-text" th:text="${job.getDescription()}"></p>
+                                <p class="card-text" th:text="${job.getCompany().getName()}"></p>
+                                <!--   skill-->
+                                <div class="row d-flex flex-row justify-content-start align-items-center"  style="font-size: 13px">
+                                    <div class="col-auto bg-info border rounded p-1 ms-2 skill-name" th:each="jobSkill : ${job.getJobSkills()}">
+                                        <span th:text="${jobSkill.getSkill().getSkillName()}" style="color: #154bb4"></span>
+                                    </div>
+                                </div>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             </div>
                         </div>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                     </div>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-success w-100 h-100">Apply</button>
+                    <div class="row w-100 h-100">
+                        <button class="btn btn-success apply-btn z-2">Apply</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="pagination justify-content-center align-items-center">
+        <ul class="pagination">
+            <li th:classappend="${jobs.hasPrevious()} ? 'page-item' : 'page-item disabled'">
+                <a th:href="@{/(page=${jobs.number - 1})}" class="page-link">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, jobs.totalPages - 1)}" th:classappend="${i == jobs.number} ? 'page-item active' : 'page-item'">
+                <a th:href="@{/(page=${i})}" class="page-link" th:text="${i + 1}">1</a>
+            </li>
+            <li th:classappend="${jobs.hasNext()} ? 'page-item' : 'page-item disabled'">
+                <a th:href="@{/(page=${jobs.number + 1})}" class="page-link">Next</a>
+            </li>
+        </ul>
+    </div>
     <!--  End body section -->
 </div>
-<div th:replace="~{components/footer.html}"></div>
+
+
+<footer th:replace="~{layout :: page_footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function() {
@@ -107,6 +126,9 @@
                 $(this).css('background-color', '');
             }
         );
+        $('.apply-btn').click(function() {
+            window.location.href = '/apply';
+        });
     });
 </script>
 </body>

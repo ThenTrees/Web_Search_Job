@@ -9,6 +9,8 @@ import com.thentrees.lab_week5_www.backend.repositories.CompanyRepository;
 import com.thentrees.lab_week5_www.backend.repositories.JobRepository;
 import com.thentrees.lab_week5_www.backend.services.IJobService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,8 +48,8 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public List<Job> getAllJobs() {
-        return jobRepository.findAll();
+    public Page<Job> getAllJobs(Pageable pageable) {
+        return jobRepository.findAll(pageable);
     }
 
     @Override

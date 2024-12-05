@@ -97,7 +97,7 @@ public class CandidateServiceImpl implements ICandidateService {
     }
 
     private boolean checkPhoneAndEmailExists(String phone, String email) {
-        return candidateRepository.findByPhone(phone) != null || candidateRepository.findByEmail(email) != null;
+        return candidateRepository.findByPhone(phone).isPresent() || candidateRepository.findByEmail(email) != null;
     }
 
 

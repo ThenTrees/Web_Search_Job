@@ -3,7 +3,6 @@ package com.thentrees.lab_week5_www.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,7 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Candidate implements  UserDetails {
+@ToString
+public class Candidate implements  UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "can_id")
@@ -63,7 +63,7 @@ public class Candidate implements  UserDetails {
 
     @Override
     public String getUsername() {
-        return fullName;
+        return phone;
     }
 
     @Override
