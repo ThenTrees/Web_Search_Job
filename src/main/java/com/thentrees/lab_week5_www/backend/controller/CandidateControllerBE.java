@@ -1,6 +1,6 @@
 package com.thentrees.lab_week5_www.backend.controller;
 
-import com.thentrees.lab_week5_www.backend.dto.request.CandidateRequestDto;
+import com.thentrees.lab_week5_www.backend.dto.request.candidate.CandidateRequestDto;
 import com.thentrees.lab_week5_www.backend.dto.response.ResponseObject;
 import com.thentrees.lab_week5_www.backend.services.ICandidateService;
 import jakarta.validation.Valid;

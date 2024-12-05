@@ -1,8 +1,7 @@
 package com.thentrees.lab_week5_www.backend.mapper;
 
-import com.thentrees.lab_week5_www.backend.dto.request.CandidateRequestDto;
+import com.thentrees.lab_week5_www.backend.dto.request.candidate.CandidateRequestDto;
 import com.thentrees.lab_week5_www.backend.dto.response.CandidateResponseDto;
-import com.thentrees.lab_week5_www.backend.models.Address;
 import com.thentrees.lab_week5_www.backend.models.Candidate;
 import org.springframework.stereotype.Component;
 

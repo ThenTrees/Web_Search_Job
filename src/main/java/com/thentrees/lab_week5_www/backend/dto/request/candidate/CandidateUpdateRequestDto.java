@@ -1,8 +1,8 @@
-package com.thentrees.lab_week5_www.backend.dto.request;
+package com.thentrees.lab_week5_www.backend.dto.request.candidate;
 
+import com.thentrees.lab_week5_www.backend.dto.request.CandidateSkillRequestDto;
+import com.thentrees.lab_week5_www.backend.dto.request.ExperienceRequestDto;
 import com.thentrees.lab_week5_www.backend.models.Address;
-import com.thentrees.lab_week5_www.backend.models.CandidateSkill;
-import com.thentrees.lab_week5_www.backend.models.Skill;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CandidateRequestDto {
+public class CandidateUpdateRequestDto {
+    private Long id;
     @NotEmpty(message = "Phone number is required")
     @Size(min = 10, max = 11, message = "Phone number must be between 10 and 11 characters")
     @Pattern(regexp = "^0\\d{9}$", message = "Phone number must contain only numbers and start with character 0")

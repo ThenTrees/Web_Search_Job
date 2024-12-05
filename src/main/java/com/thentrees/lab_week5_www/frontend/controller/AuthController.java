@@ -1,7 +1,7 @@
 package com.thentrees.lab_week5_www.frontend.controller;
 
 import com.thentrees.lab_week5_www.backend.dto.request.AddressRequestDto;
-import com.thentrees.lab_week5_www.backend.dto.request.CandidateRequestDto;
+import com.thentrees.lab_week5_www.backend.dto.request.candidate.CandidateRequestDto;
 import com.thentrees.lab_week5_www.backend.models.Address;
 import com.thentrees.lab_week5_www.backend.models.Candidate;
 import com.thentrees.lab_week5_www.backend.services.IAddressService;
@@ -33,11 +33,11 @@ public class AuthController {
             @ModelAttribute ("address") AddressRequestDto addressRequestDto,
             @Valid BindingResult result
     ) {
-        log.info("Register with candidate info::::{}", candidateRequestDto);
-        log.info("Register with candidate address::::{}", addressRequestDto);
+        log.info("begin register");
         Address addressRs = addressService.addAddress(addressRequestDto);
         candidateRequestDto.setAddress(addressRs);
-        Candidate candidate = candidateService.createCandidate(candidateRequestDto);
+        candidateService.createCandidate(candidateRequestDto);
+        log.info("end register");
         return "redirect:/login";
     }
 
