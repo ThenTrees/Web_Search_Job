@@ -22,8 +22,9 @@
                 <a th:href="@{/logout}" class="text-decoration-none col-md-3 btn btn-danger">Logout</a>
             </div>
             <div class="row d-flex justify-content-end align-items-center" sec:authorize="isAnonymous()"> <!-- check co dang nhap hay chua, neu chua thi co nut dang nhap va dang ki -->
-                <a href="/login" class="text-decoration-none col-md-2 btn btn-primary mx-3">Login</a>
-                <a  href="/register" class="text-decoration-none col-md-2 btn btn-primary ">Sign up</a>
+                <a href="/login" class="text-decoration-none col-md-2 btn btn-primary mx-3">Sign In</a>
+                <a  href="/register-candidate" class="text-decoration-none col-md-2 mx-3 btn btn-primary ">Sign up Candidate</a>
+                <a  href="/register-company" class="text-decoration-none col-md-2 btn btn-primary ">Sign up Company</a>
             </div>
         </div>
     </div>

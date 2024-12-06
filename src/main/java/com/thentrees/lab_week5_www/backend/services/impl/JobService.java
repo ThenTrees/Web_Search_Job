@@ -7,10 +7,12 @@ import com.thentrees.lab_week5_www.backend.models.Company;
 import com.thentrees.lab_week5_www.backend.models.Job;
 import com.thentrees.lab_week5_www.backend.repositories.CompanyRepository;
 import com.thentrees.lab_week5_www.backend.repositories.JobRepository;
+import com.thentrees.lab_week5_www.backend.repositories.specification.JobSpecification;
 import com.thentrees.lab_week5_www.backend.services.IJobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,9 +50,36 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public Page<Job> getAllJobs(Pageable pageable) {
-        return jobRepository.findAll(pageable);
+    public Page<Job> getAllJobs(Pageable pageable, String name, String city) {
+
+        switch (city){
+            case "1":
+                city = "Ha Noi";
+                break;
+            case "2":
+                city = "Da Nang";
+                break;
+            case "3":
+                city = "Ho Chi Minh";
+                break;
+            case "4":
+                city = "";
+                break;
+        }
+
+        Specification<Job> specification = Specification.where(null);
+        // Thêm điều kiện tìm theo tên nếu có
+        if (name != null && !name.isEmpty()) {
+            specification = specification.and(JobSpecification.hasTitle(name));
+        }
+        // Thêm điều kiện tìm theo thành phố nếu có
+        if (!city.isEmpty()) {
+            specification = specification.and(JobSpecification.hasCity(city));
+        }
+        return jobRepository.findAll(specification, pageable);
+//        return jobRepository.findAll(pageable);
     }
+
 
     @Override
     public List<Job> getAllJobByCompanyId(Long companyId) {

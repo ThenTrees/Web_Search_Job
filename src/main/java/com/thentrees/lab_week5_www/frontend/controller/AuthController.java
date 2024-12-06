@@ -27,7 +27,7 @@ public class AuthController {
         * @ModelAttribute("address") AddressRequestDto addressRequestDto: Lấy thông tin địa chỉ từ form
         * @Valid BindingResult result: Kiểm tra lỗi
      */
-    @PostMapping("/register")
+    @PostMapping("/register-candidate")
     public String registerAccount(
             @ModelAttribute ("candidate") CandidateRequestDto candidateRequestDto,
             @ModelAttribute ("address") AddressRequestDto addressRequestDto,

@@ -1,6 +1,5 @@
 package com.thentrees.lab_week5_www.backend.models;
 
-import com.thentrees.lab_week5_www.backend.enums.SkillLevel;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,8 +1,10 @@
 package com.thentrees.lab_week5_www.frontend.controller;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.thentrees.lab_week5_www.backend.dto.request.CompanyRequestDto;
 import com.thentrees.lab_week5_www.backend.models.Address;
 import com.thentrees.lab_week5_www.backend.models.Candidate;
+import com.thentrees.lab_week5_www.backend.models.Company;
 import com.thentrees.lab_week5_www.backend.models.Job;
 import com.thentrees.lab_week5_www.backend.services.IJobService;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +28,48 @@ public class HomeController {
     private final IJobService jobService;
 
     @GetMapping({"/",""})
-    public ModelAndView showHomePage(@RequestParam(defaultValue = "0") int page, ModelAndView mv) {
+    public ModelAndView showHomePage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "") String city,
+                                     ModelAndView mv) {
         log.info("Show home page.");
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        log.info("Authentication:::{}", authentication.getPrincipal().toString());
-        Pageable pageable = PageRequest.of(page, 3); // 5 jobs per page
-        Page<Job> jobs = jobService.getAllJobs(pageable);
+
+
+        log.info("Search: {} - {}", search, city);
+        // search job by title and city
+        int numberElement = 3;
+        Pageable pageable = PageRequest.of(page, numberElement); // 5 jobs per page
+        Page<Job> jobs = jobService.getAllJobs(pageable, search, city);
         mv.addObject("jobs", jobs);
+        mv.addObject("search", search);
+        mv.addObject("city", city);
         mv.setViewName("/index");
         return mv;
     }
+
+    @GetMapping("/register-candidate")
+    public ModelAndView showRegisterForm(ModelAndView modelAndView) {
+        Candidate candidate = new Candidate();
+        candidate.setAddress(new Address());
+        modelAndView.addObject("candidate", candidate);
+        modelAndView.addObject("address", candidate.getAddress());
+        modelAndView.addObject("countries", CountryCode.values());
+        modelAndView.setViewName("auth/sign-up");
+        return modelAndView;
+    }
+
+    @GetMapping("/register-company")
+    public ModelAndView showRegisterCompanyForm(ModelAndView modelAndView) {
+        CompanyRequestDto company = new CompanyRequestDto();
+        company.setAddress(new Address());
+        modelAndView.addObject("company", company);
+        modelAndView.addObject("address", company.getAddress());
+        modelAndView.addObject("countries", CountryCode.values());
+        modelAndView.setViewName("auth/sign-up-company");
+        return modelAndView;
+    }
+
 
     @GetMapping("/profile")
     public ModelAndView showProfilePage(ModelAndView mv) {
@@ -51,17 +85,6 @@ public class HomeController {
             mv.addObject("countries", CountryCode.values());
             mv.setViewName("candidate/profile");
             return mv;
-    }
-
-    @GetMapping("/register")
-    public ModelAndView showRegisterForm(ModelAndView modelAndView) {
-        Candidate candidate = new Candidate();
-        candidate.setAddress(new Address());
-        modelAndView.addObject("candidate", candidate);
-        modelAndView.addObject("address", candidate.getAddress());
-        modelAndView.addObject("countries", CountryCode.values());
-        modelAndView.setViewName("auth/sign-up");
-        return modelAndView;
     }
 
     @GetMapping("/login")

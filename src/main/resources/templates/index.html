@@ -35,15 +35,23 @@
     <div class="row bg-custom text-white">
             <div class="my-5 offset-2 col-md-6 offset-md-3">
                 <div class="input-group">
-                        <select class="form-select col" aria-label="City">
-                            <option selected class="text-center">Thành Phố</option>
-                            <option class="text-center" value="1">Hà Nội</option>
-                            <option class="text-center" value="2">Đà Nẵng</option>
-                            <option class="text-center" value="3">Hồ Chí Minh</option>
-                        </select>
-                    <input type="text" class="form-control input-large col w-50" placeholder="Tìm kiếm việc làm..." aria-label="Search">
-                    <button class="btn btn-primary col-2" id="search-input" type="button">Tìm kiếm</button>
+                    <!-- Dropdown for City -->
+                    <select class="form-select col" aria-label="City" th:value="${city}">
+                        <option class="text-center" value="4" th:selected="${city == '4'}">Thành Phố</option>
+                        <option class="text-center" value="1" th:selected="${city == '1'}">Hà Nội</option>
+                        <option class="text-center" value="2" th:selected="${city == '2'}">Đà Nẵng</option>
+                        <option class="text-center" value="3" th:selected="${city == '3'}">Hồ Chí Minh</option>
+                    </select>
+
+                    <!-- Input for Job Search -->
+                    <input type="text" class="form-control input-large col w-50"
+                           placeholder="Tìm kiếm việc làm..." aria-label="Search"
+                           th:value="${search}" />
+
+                    <!-- Search Button -->
+                    <button class="btn btn-primary col-2" id="search-input" type="submit">Tìm kiếm</button>
                 </div>
+
             </div>
         <div class="row p-1 d-flex flex-row justify-content-around align-items-center text-center ">
             <dt class="col-2">Suggested Skill: </dt>
@@ -128,6 +136,11 @@
         );
         $('.apply-btn').click(function() {
             window.location.href = '/apply';
+        });
+
+        $('#search-input').click(function() {
+            let search = $('input').val();
+            window.location.href = '?search=' + search+'&city='+$('select').val();
         });
     });
 </script>

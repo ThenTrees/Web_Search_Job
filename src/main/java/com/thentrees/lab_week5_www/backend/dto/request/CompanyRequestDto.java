@@ -21,6 +21,7 @@ public class CompanyRequestDto {
     @NotBlank(message = "Company name is required")
     @Size(min = 2, max = 255, message = "Company name must be between 2 and 255 characters")
     private String name;
+    private String password;
     private String about;
     @NotNull(message = "Address is required")
     private Address address;

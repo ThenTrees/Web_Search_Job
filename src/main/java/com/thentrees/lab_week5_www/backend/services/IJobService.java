@@ -20,6 +20,7 @@ public interface IJobService {
 
     Job getJobById(Long id);
 
-    Page<Job> getAllJobs(Pageable pageable);
+    Page<Job> getAllJobs(Pageable pageable, String search, String city);
+
     List<Job> getAllJobByCompanyId(Long companyId);
 }
