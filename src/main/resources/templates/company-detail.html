@@ -44,26 +44,34 @@
     <div class="row text-start">
         <h1>Vị trí tuyển dụng</h1>
         <div class="card mb-3" th:each="job : ${jobs}">
-            <div class="job-container row g-0 job" th:attr="data-id=${job.getId()}">
-                <div class="col-md-3 d-flex justify-content-center align-items-center">
-                    <img class="rounded mx-auto d-block img-logo" src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E" alt="logo company" >
-                </div>
-                <div class="col-md-7">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${job.getName()}"></h5>
-                        <p class="card-text" th:text="${job.getDescription()}"></p>
-                        <p class="card-text" th:text="${job.getCompany().getName()}"></p>
-                        <!--   skill-->
-                        <div class="row d-flex flex-row justify-content-start align-items-center"  style="font-size: 13px">
-                            <div class="col-auto bg-info border rounded p-1 ms-2 skill-name" th:each="jobSkill : ${job.getJobSkills()}">
-                                <span th:text="${jobSkill.getSkill().getSkillName()}" style="color: #154bb4"></span>
+            <div class=" row job">
+                <div class="col-10 job-container" th:attr="data-id=${job.getId()}">
+                    <div class="row">
+                        <div class="col-md-3 d-flex justify-content-center align-items-center">
+                            <img class="rounded mx-auto d-block img-logo" src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E" alt="logo company" >
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <input type="hidden" class="job-id" th:value="${job.getId()}">
+                                <h5 class="card-title" th:text="${job.getName()}"></h5>
+                                <p class="card-text" th:text="${job.getDescription()}"></p>
+                                <p class="card-text" th:text="${job.getCompany().getName()}"></p>
+                                <!--   skill-->
+                                <div class="row d-flex flex-row justify-content-start align-items-center"  style="font-size: 13px">
+                                    <div class="col-auto bg-info border rounded p-1 ms-2 skill-name" th:each="jobSkill : ${job.getJobSkills()}">
+                                        <span th:text="${jobSkill.getSkill().getSkillName()}" style="color: #154bb4"></span>
+                                    </div>
+                                </div>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             </div>
                         </div>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                     </div>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-success w-100 h-100">Apply</button>
+                    <div class="row w-100 h-100">
+                        <button class="btn btn-success apply-btn z-2" th:if="${!jobApplied.contains(job.getId())}">Apply</button>
+                        <button class="btn btn-success un-apply-btn z-2" th:unless="${!jobApplied.contains(job.getId())}">Un Apply</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,6 +98,15 @@
                     $(this).css('background-color', '');
                 }
             );
+            $('.apply-btn').click(function() {
+                let jobId = $(this).closest('.job').find('.job-id').val();
+                window.location.href = '/jobs/apply/' + jobId;
+            });
+        $('.un-apply-btn').click(function() {
+            let jobId = $(this).closest('.job').find('.job-id').val();
+            window.location.href = '/jobs/un-apply/' + jobId;
+        });
+
     });
 </script>
 </body>

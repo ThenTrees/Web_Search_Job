@@ -92,7 +92,7 @@
                 <div class="col-2">
                     <div class="row w-100 h-100">
                         <button class="btn btn-success apply-btn z-2" th:if="${!jobApplied.contains(job.getId())}">Apply</button>
-                        <button class="btn btn-success apply-btn z-2" th:unless="${!jobApplied.contains(job.getId())}">Un Apply</button>
+                        <button class="btn btn-success un-apply-btn z-2" th:unless="${!jobApplied.contains(job.getId())}">Un Apply</button>
                     </div>
                 </div>
             </div>
@@ -119,13 +119,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function() {
-
         // chuyển trang khi click vào job
         $('.job-container').click(function() {
             let jobId = $(this).data('id');
             window.location.href = '/jobs/' + jobId;
         });
-
         $('.job-container').hover(
             function() {
                 // Code to execute when mouse enters the element
@@ -138,8 +136,12 @@
         );
         $('.apply-btn').click(function() {
             let jobId = $(this).closest('.job').find('.job-id').val();
-            alert("Apply job success");
             window.location.href = 'jobs/apply/' + jobId;
+        });
+
+        $('.un-apply-btn').click(function() {
+            let jobId = $(this).closest('.job').find('.job-id').val();
+            window.location.href = 'jobs/un-apply/' + jobId;
         });
 
         $('#search-input').click(function() {

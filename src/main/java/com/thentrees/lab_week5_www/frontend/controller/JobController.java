@@ -5,6 +5,7 @@ import com.thentrees.lab_week5_www.backend.models.CandidateJob;
 import com.thentrees.lab_week5_www.backend.models.JobSkill;
 import com.thentrees.lab_week5_www.backend.models.Skill;
 import com.thentrees.lab_week5_www.backend.services.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,19 @@ public class JobController {
     @GetMapping("/{id}")
     public ModelAndView getJobById(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView();
+        ArrayList<Long> jobApplied = new ArrayList<Long>();
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!authentication.getName().equalsIgnoreCase("anonymousUser")){
+            Candidate candidate = (Candidate) authentication.getPrincipal();
+            List<CandidateJob> candidateJobs = candidateJobService.getAllCandidateJobByCandidateId(candidate.getId());
+
+            for (CandidateJob candidateJob : candidateJobs){
+                jobApplied.add(candidateJob.getJob().getId());
+            }
+
+        }
+        mv.addObject("jobApplied", jobApplied);
         List<JobSkill> jobSkills = jobSkillService.getAllSkillsByJobId(id);
         mv.addObject("jobSkills", jobSkills);
         mv.addObject("job", jobService.getJobById(id));
@@ -63,7 +76,7 @@ public class JobController {
         }
         Candidate candidate = (Candidate) auth.getPrincipal();
         candidateJobService.removeCandidateFromJob(candidate.getId(), id);
-        mv.setViewName("redirect:/jobs/"+id);
+        mv.setViewName("redirect:/");
         return mv;
     }
 }

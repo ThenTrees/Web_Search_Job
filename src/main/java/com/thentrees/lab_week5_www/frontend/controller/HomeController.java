@@ -41,12 +41,11 @@ public class HomeController {
 
         // search job by title and city
         ArrayList<Long> jobApplied = new ArrayList<Long>();
-        // get all skill of job
-        List<CandidateJob> candidateJobs = new ArrayList<>();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!authentication.getName().equalsIgnoreCase("anonymousUser")){
             Candidate candidate = (Candidate) authentication.getPrincipal();
-            candidateJobs = candidateJobService.getAllCandidateJobByCandidateId(candidate.getId());
+            List<CandidateJob> candidateJobs = candidateJobService.getAllCandidateJobByCandidateId(candidate.getId());
 
             for (CandidateJob candidateJob : candidateJobs){
                 jobApplied.add(candidateJob.getJob().getId());
