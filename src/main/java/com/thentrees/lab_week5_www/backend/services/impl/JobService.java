@@ -77,7 +77,7 @@ public class JobService implements IJobService {
             specification = specification.and(JobSpecification.hasCity(city));
         }
         return jobRepository.findAll(specification, pageable);
-//        return jobRepository.findAll(pageable);
+
     }
 
 

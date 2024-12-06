@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "job")
@@ -27,6 +28,9 @@ public class Job {
 
     @OneToMany(mappedBy = "job")
     private List<JobSkill> jobSkills;
+
+    @OneToMany(mappedBy = "job")
+    private Set<CandidateJob> candidateJobs;
 
     @Column(name = "job_desc",columnDefinition = "varchar(2000)")
     private String description;

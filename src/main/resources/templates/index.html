@@ -74,6 +74,7 @@
                         </div>
                         <div class="col-md-7">
                             <div class="card-body">
+                                <input type="hidden" class="job-id" th:value="${job.getId()}">
                                 <h5 class="card-title" th:text="${job.getName()}"></h5>
                                 <p class="card-text" th:text="${job.getDescription()}"></p>
                                 <p class="card-text" th:text="${job.getCompany().getName()}"></p>
@@ -90,7 +91,8 @@
                 </div>
                 <div class="col-2">
                     <div class="row w-100 h-100">
-                        <button class="btn btn-success apply-btn z-2">Apply</button>
+                        <button class="btn btn-success apply-btn z-2" th:if="${!jobApplied.contains(job.getId())}">Apply</button>
+                        <button class="btn btn-success apply-btn z-2" th:unless="${!jobApplied.contains(job.getId())}">Un Apply</button>
                     </div>
                 </div>
             </div>
@@ -135,7 +137,9 @@
             }
         );
         $('.apply-btn').click(function() {
-            window.location.href = '/apply';
+            let jobId = $(this).closest('.job').find('.job-id').val();
+            alert("Apply job success");
+            window.location.href = 'jobs/apply/' + jobId;
         });
 
         $('#search-input').click(function() {

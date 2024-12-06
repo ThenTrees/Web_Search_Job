@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-6">
             <div class="row d-flex justify-content-end align-items-center" sec:authorize="isAuthenticated()"> <!-- check co dang nhap hay chua, neu chua thi co nut dang nhap va dang ki -->
-                <a class="col-md-3" sec:authentication="principal.fullName"  th:href="@{/profile}"></a>
+                <a class="col-md-3" sec:authentication="principal.fullName" th:href="@{/profile}"></a>
                 <a th:href="@{/logout}" class="text-decoration-none col-md-3 btn btn-danger">Logout</a>
             </div>
             <div class="row d-flex justify-content-end align-items-center" sec:authorize="isAnonymous()"> <!-- check co dang nhap hay chua, neu chua thi co nut dang nhap va dang ki -->

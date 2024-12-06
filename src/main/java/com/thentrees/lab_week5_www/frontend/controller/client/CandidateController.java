@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("${api.prefix}/candidates")
@@ -23,6 +24,7 @@ public class CandidateController {
 
     private final ICandidateService candidateService;
     private final IAddressService addressService;
+
 
     /**
      * lay thong tin can can update, luu thong tin dia chi cua can,
@@ -45,4 +47,11 @@ public class CandidateController {
         log.info("end update profile");
         return "redirect:/logout";
     }
+
+    @PostMapping("/apply-job")
+    public ModelAndView applyJob(ModelAndView mv, Long jobId, Long canId) {
+
+        return mv;
+    }
+
 }

@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "cadidate")
@@ -53,6 +54,10 @@ public class Candidate implements  UserDetails, Serializable {
 
     @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
     private List<Experience> experiences;
+
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+    private Set<CandidateJob> candidateJobs;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

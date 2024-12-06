@@ -7,12 +7,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
 @EqualsAndHashCode
 @Embeddable
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class JobSkillId implements Serializable {
+public class CandidateJobId implements Serializable {
+    private Long candidateId;
     private Long jobId;
-    private Long skillId;
 }
