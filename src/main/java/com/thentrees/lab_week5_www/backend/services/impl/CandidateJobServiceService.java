@@ -59,4 +59,9 @@ public class CandidateJobServiceService implements ICandidateJobService {
     public List<CandidateJob> getAllCandidateJobByCandidateId(Long candidateId) {
         return candidateJobRepository.getAllCandidateJobByCandidateId(candidateId);
     }
+
+    @Override
+    public List<CandidateJob> getAllCandidatesByJobId(Long jobId) {
+        return candidateJobRepository.getAllCandidateJobByJobId(jobId);
+    }
 }

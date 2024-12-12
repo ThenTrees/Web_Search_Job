@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface CandidateJobRepository extends JpaRepository<CandidateJob, CandidateJobId> {
     List<CandidateJob> getAllCandidateJobByCandidateId(Long candidateId);
+    List<CandidateJob> getAllCandidateJobByJobId(Long jobId);
 }

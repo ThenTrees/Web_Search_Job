@@ -66,27 +66,37 @@
         </div>
         <!-- Address -->
         <div class="mb-3">
-            <label class="form-label">Address</label>
+            <label class="form-label" >Address</label>
             <div class="row g-2">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Number" th:field="*{address.number}">
+                    <label>
+                        <input type="text" class="form-control" placeholder="Number" th:field="*{address.number}">
+                    </label>
                 </div>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" placeholder="Street" th:field="*{address.street}">
+                    <label>
+                        <input type="text" class="form-control" placeholder="Street" th:field="*{address.street}">
+                    </label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="City" th:field="*{address.city}">
+                    <label>
+                        <input type="text" class="form-control" placeholder="City" th:field="*{address.city}">
+                    </label>
                 </div>
             </div>
             <div class="row g-2 mt-2">
                 <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Zip code" th:field="*{address.zipCode}">
+                    <label>
+                        <input type="text" class="form-control" placeholder="Zip code" th:field="*{address.zipCode}">
+                    </label>
                 </div>
                 <div class="col-md-6">
-                    <select class="form-select" th:field="*{address.country}">
-                        <option selected value="0">Country</option>
-                        <option th:each="country : ${countries}" th:value="${country.numeric}" th:text="${country.name}"></option>
-                    </select>
+                    <label>
+                        <select class="form-select" th:field="*{address.country}">
+                            <option selected value="0">Country</option>
+                            <option th:each="country : ${countries}" th:value="${country.numeric}" th:text="${country.name}"></option>
+                        </select>
+                    </label>
                 </div>
             </div>
         </div>

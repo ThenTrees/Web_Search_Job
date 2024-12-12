@@ -55,7 +55,7 @@
                                 <input type="hidden" class="job-id" th:value="${job.getId()}">
                                 <h5 class="card-title" th:text="${job.getName()}"></h5>
                                 <p class="card-text" th:text="${job.getDescription()}"></p>
-                                <p class="card-text" th:text="${job.getCompany().getName()}"></p>
+                                <p class="card-text" th:text="${job.getCompany().getFullName()}"></p>
                                 <!--   skill-->
                                 <div class="row d-flex flex-row justify-content-start align-items-center"  style="font-size: 13px">
                                     <div class="col-auto bg-info border rounded p-1 ms-2 skill-name" th:each="jobSkill : ${job.getJobSkills()}">

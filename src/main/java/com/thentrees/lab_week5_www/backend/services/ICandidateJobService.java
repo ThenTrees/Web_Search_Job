@@ -1,5 +1,6 @@
 package com.thentrees.lab_week5_www.backend.services;
 
+import com.thentrees.lab_week5_www.backend.models.Candidate;
 import com.thentrees.lab_week5_www.backend.models.CandidateJob;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,4 +14,5 @@ public interface ICandidateJobService {
     void removeCandidateFromJob(Long candidateId, Long jobId);
 
     List<CandidateJob> getAllCandidateJobByCandidateId(Long candidateId);
+    List<CandidateJob> getAllCandidatesByJobId(Long jobId);
 }

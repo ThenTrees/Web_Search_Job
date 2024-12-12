@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <title>Job Detail</title>
   <meta charset="utf-8">
@@ -36,7 +37,7 @@
           <div class="card-body">
             <input type="hidden" class="job-id" th:value="${job.getId()}">
             <h5 class="card-title" th:text="${job.getName()}"></h5>
-            <p class="card-text text-secondary" th:text="${job.getCompany().getName()}"></p>
+            <p class="card-text text-secondary" th:text="${job.getCompany().getFullName()}"></p>
             <p class="card-text" th:text="${job.getCompany().getAddress().toString()}"></p>
             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
           </div>
@@ -63,9 +64,24 @@
         </div>
       </div>
     </div>
-    <div>
+    <div th:if="${jobApplied}">
       <button type="button" class="btn btn-danger mt-3 w-100 p-2 apply-btn" th:if="${!jobApplied.contains(job.getId())}">Ứng tuyển</button>
       <button type="button" class="btn btn-danger mt-3 w-100 p-2 un-apply-btn" th:unless="${!jobApplied.contains(job.getId())}">Huỷ ứng tuyển</button>
+    </div>
+
+    <div >
+      <div class="text-center p-3" sec:authorize="hasRole('ROLE_COMPANY')">
+        <h1>Danh sách ứng viên</h1>
+      </div>
+      <div class="card" style="width: 18rem;" th:each="candidate : ${candidateOfJob}">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${candidate.getFullName()}"></h5>
+          <p class="card-text" th:text="${candidate.getEmail()}"></p>
+          <p class="card-text" th:text="${candidate.getDob()}"></p>
+          <button type="button" class="btn btn-primary mt-3 w-100 p-2">Liên hệ</button>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>

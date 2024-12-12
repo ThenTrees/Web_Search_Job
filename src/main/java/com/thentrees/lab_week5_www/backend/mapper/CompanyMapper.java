@@ -9,7 +9,7 @@ public class CompanyMapper {
     public Company toCompany(CompanyRequestDto request){
         return Company.builder()
                 .about(request.getAbout())
-                .name(request.getName())
+                .fullName(request.getName())
                 .phone(request.getPhone())
                 .email(request.getEmail())
                 .webURL(request.getWebURL())

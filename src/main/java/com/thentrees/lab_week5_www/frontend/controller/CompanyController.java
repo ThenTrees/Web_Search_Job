@@ -9,6 +9,7 @@ import com.thentrees.lab_week5_www.backend.services.IJobSkillService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,12 +29,26 @@ public class CompanyController {
     private final ICompanyService companyService;
     private final IJobService jobService;
     private final ICandidateJobService candidateJobService;
+
+    @GetMapping("/my")
+    public ModelAndView showCompany(ModelAndView mv) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Company company = (Company) authentication.getPrincipal();
+
+        List<Job> jobs = jobService.getAllJobByCompanyId(company.getId());
+        mv.addObject("jobs", jobs);
+        mv.addObject("company", company);
+        mv.setViewName("home-company");
+        return mv;
+    }
+
     /**
      * Show list company
      * candidate has seen site for find company
      * @param ModelAndView
      * @return page list company
      */
+
     @GetMapping("")
     public ModelAndView showListCompany(ModelAndView mv) {
         log.info("Show list company:::");

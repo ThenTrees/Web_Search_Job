@@ -23,4 +23,5 @@ public interface IJobService {
     Page<Job> getAllJobs(Pageable pageable, String search, String city);
 
     List<Job> getAllJobByCompanyId(Long companyId);
+
 }

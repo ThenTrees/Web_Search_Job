@@ -2,10 +2,7 @@ package com.thentrees.lab_week5_www.frontend.controller;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.thentrees.lab_week5_www.backend.dto.request.CompanyRequestDto;
-import com.thentrees.lab_week5_www.backend.models.Address;
-import com.thentrees.lab_week5_www.backend.models.Candidate;
-import com.thentrees.lab_week5_www.backend.models.CandidateJob;
-import com.thentrees.lab_week5_www.backend.models.Job;
+import com.thentrees.lab_week5_www.backend.models.*;
 import com.thentrees.lab_week5_www.backend.services.ICandidateJobService;
 import com.thentrees.lab_week5_www.backend.services.IJobService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +28,12 @@ import java.util.List;
 public class HomeController {
     private final IJobService jobService;
     private final ICandidateJobService candidateJobService;
+
+    @GetMapping("/admin")
+    public String showAdminPage() {
+        return "home-admin";
+    }
+
     @GetMapping({"/",""})
     public ModelAndView showHomePage(
             @RequestParam(defaultValue = "0") int page,
@@ -38,22 +41,17 @@ public class HomeController {
             @RequestParam(defaultValue = "") String city,
             ModelAndView mv) {
         log.info("Show home page.");
-
         // search job by title and city
         ArrayList<Long> jobApplied = new ArrayList<Long>();
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!authentication.getName().equalsIgnoreCase("anonymousUser")){
-            Candidate candidate = (Candidate) authentication.getPrincipal();
+            User candidate = (User) authentication.getPrincipal();
             List<CandidateJob> candidateJobs = candidateJobService.getAllCandidateJobByCandidateId(candidate.getId());
-
             for (CandidateJob candidateJob : candidateJobs){
                 jobApplied.add(candidateJob.getJob().getId());
             }
-
         }
         mv.addObject("jobApplied", jobApplied);
-
         int numberElement = 3;
         Pageable pageable = PageRequest.of(page, numberElement); // 5 jobs per page
         Page<Job> jobs = jobService.getAllJobs(pageable, search, city);
@@ -66,8 +64,9 @@ public class HomeController {
 
     @GetMapping("/register-candidate")
     public ModelAndView showRegisterForm(ModelAndView modelAndView) {
-        Candidate candidate = new Candidate();
-        candidate.setAddress(new Address());
+        Candidate candidate = Candidate.builder()
+                .address(new Address())
+                .build();
         modelAndView.addObject("candidate", candidate);
         modelAndView.addObject("address", candidate.getAddress());
         modelAndView.addObject("countries", CountryCode.values());
@@ -90,6 +89,18 @@ public class HomeController {
     @GetMapping("/profile")
     public ModelAndView showProfilePage(ModelAndView mv) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(!authentication.getAuthorities().contains("ROLE_COMPANY")) {
+            Company company = (Company) authentication.getPrincipal();
+            log.info("Company:::{}", company);
+            if(company == null) {
+                mv.setViewName("redirect:/login");
+                return mv;
+            }
+            mv.setViewName("redirect:/companies/my");
+            return mv;
+        }
+
         Candidate candidate = (Candidate) authentication.getPrincipal();
         log.info("Candidate:::{}", candidate);
         if(candidate == null) {
@@ -112,6 +123,4 @@ public class HomeController {
     public String showApplyPage() {
        return "apply";
     }
-
-
 }

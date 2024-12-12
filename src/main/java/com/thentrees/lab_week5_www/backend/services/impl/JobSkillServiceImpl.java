@@ -18,4 +18,9 @@ public class JobSkillServiceImpl implements IJobSkillService {
     public List<JobSkill> getAllSkillsByJobId(Long jobId) {
         return jobSkillRepository.findAllByJobId(jobId);
     }
+
+    @Override
+    public JobSkill add(JobSkill jobSkill) {
+        return jobSkillRepository.save(jobSkill);
+    }
 }

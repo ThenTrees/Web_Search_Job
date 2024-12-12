@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IJobSkillService {
     List<JobSkill> getAllSkillsByJobId(Long jobId);
+
+    JobSkill add(JobSkill jobSkill);
 }

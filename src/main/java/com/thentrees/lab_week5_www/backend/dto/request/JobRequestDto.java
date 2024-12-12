@@ -1,5 +1,7 @@
 package com.thentrees.lab_week5_www.backend.dto.request;
 
+import com.thentrees.lab_week5_www.backend.models.CandidateJob;
+import com.thentrees.lab_week5_www.backend.models.CandidateSkill;
 import com.thentrees.lab_week5_www.backend.models.Company;
 import com.thentrees.lab_week5_www.backend.models.JobSkill;
 import jakarta.persistence.Column;
@@ -12,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -19,8 +22,11 @@ import java.util.List;
 @Builder
 public class JobRequestDto {
     private String name;
-    private Long companyId;
-    private List<JobSkill> jobSkills;
     private String description;
-
+    private double salary;
+    private Long companyId;
+    private int level;
+//    private List<JobSkill> jobSkills;
+    private Set<String> skills;
+    private Set<CandidateJob> candidateJobs;
 }

@@ -5,12 +5,15 @@ import com.thentrees.lab_week5_www.backend.dto.request.candidate.CandidateReques
 import com.thentrees.lab_week5_www.backend.dto.request.ExperienceRequestDto;
 import com.thentrees.lab_week5_www.backend.dto.request.candidate.CandidateUpdateRequestDto;
 import com.thentrees.lab_week5_www.backend.dto.response.CandidateResponseDto;
+import com.thentrees.lab_week5_www.backend.enums.RoleType;
 import com.thentrees.lab_week5_www.backend.exception.ResourceNotFoundException;
 import com.thentrees.lab_week5_www.backend.mapper.CandidateMapper;
 import com.thentrees.lab_week5_www.backend.models.*;
 import com.thentrees.lab_week5_www.backend.repositories.*;
 import com.thentrees.lab_week5_www.backend.services.ICandidateService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CandidateServiceImpl implements ICandidateService {
 
     private final CandidateRepository candidateRepository;
@@ -27,14 +31,25 @@ public class CandidateServiceImpl implements ICandidateService {
     private final CandidateSkillRepository candidateSkillRepository;
     private final SkillRepository skillRepository;
     private final ExperienceRepository experienceRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     private final AddressRepository addressRepository;
     @Override
     public Candidate createCandidate(CandidateRequestDto candidateRequestDto) {
+        log.info("Create candidate");
         if (checkPhoneAndEmailExists(candidateRequestDto.getPhone(), candidateRequestDto.getEmail())) {
             throw new RuntimeException("Phone or email already exists");
         }
+
         addressRepository.save(candidateRequestDto.getAddress());
+
         Candidate candidate = candidateMapper.toCandidate(candidateRequestDto);
+
+        Role role = roleRepository.findById(1L).orElseThrow(
+                () -> new RuntimeException("Role not found")
+        );
+        candidate.setRole(role);
+        candidate.setPassword(passwordEncoder.encode(candidateRequestDto.getPassword()));
         // skill
         List<CandidateSkill> skillsOfCandidate = new ArrayList<>();
         if(candidateRequestDto.getCandidateSkills()!=null) {
@@ -64,9 +79,11 @@ public class CandidateServiceImpl implements ICandidateService {
             }
         }
 
+        log.info("Create candidate:::{}",candidate);
         candidateRepository.save(candidate);
         candidateSkillRepository.saveAll(skillsOfCandidate);
         experienceRepository.saveAll(experiences);
+        log.info("Create candidate success");
         return candidate;
     }
 
@@ -134,8 +151,22 @@ public class CandidateServiceImpl implements ICandidateService {
         return new Address();
     }
 
+    @Override
+    public Candidate login(String phone, String password) {
+        Optional<Candidate> candidate = candidateRepository.findByPhone(phone);
+        if(candidate.isPresent()){
+            if(candidate.get().getPassword().equals(password)){
+                log.info("login success");
+                return candidate.get();
+            }
+        }
+        return null;
+    }
+
     private boolean checkPhone(String phone){
         Optional<Candidate> candidate = candidateRepository.findByPhone(phone);
         return candidate.isPresent();
     }
+
+
 }

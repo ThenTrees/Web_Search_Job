@@ -50,7 +50,6 @@ public class CandidateController {
 
     @PostMapping("/apply-job")
     public ModelAndView applyJob(ModelAndView mv, Long jobId, Long canId) {
-
         return mv;
     }
 

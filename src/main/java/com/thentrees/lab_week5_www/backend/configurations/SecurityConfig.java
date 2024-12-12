@@ -1,6 +1,7 @@
 package com.thentrees.lab_week5_www.backend.configurations;
 
 import com.thentrees.lab_week5_www.backend.repositories.CandidateRepository;
+import com.thentrees.lab_week5_www.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CandidateRepository candidateRepository;
+    private final UserRepository userRepository;
     // user's detail object
     @Bean
     public UserDetailsService userDetailsService() {
-        return phone -> candidateRepository
-                .findByPhone(phone)
+        return phone -> userRepository
+                .findUserByPhone(phone)
                 .orElseThrow(
-                        () -> new UsernameNotFoundException("Cannot find user with phone number = " + phone));
+                        () -> new UsernameNotFoundException("Cannot find user with phone number :::: " + phone));
     }
 
     @Bean

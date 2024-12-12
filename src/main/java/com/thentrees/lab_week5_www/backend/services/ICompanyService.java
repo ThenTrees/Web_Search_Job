@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ICompanyService {
     @Transactional
-    Company addCompany(CompanyRequestDto companyRequestDto);
+    void addCompany(CompanyRequestDto companyRequestDto);
 
     Company getCompanyById(Long id);
     @Transactional

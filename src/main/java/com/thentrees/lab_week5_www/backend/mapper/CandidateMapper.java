@@ -8,14 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CandidateMapper {
     public Candidate toCandidate(CandidateRequestDto candidateRequestDto) {
-
         return Candidate.builder()
-                .fullName(candidateRequestDto.getFullName())
-                .email(candidateRequestDto.getEmail())
                 .phone(candidateRequestDto.getPhone())
+                .email(candidateRequestDto.getEmail())
                 .dob(candidateRequestDto.getDob())
+                .fullName(candidateRequestDto.getFullName())
                 .address(candidateRequestDto.getAddress())
-                .password(candidateRequestDto.getPassword())
+                .active(true)
                 .build();
     }
 

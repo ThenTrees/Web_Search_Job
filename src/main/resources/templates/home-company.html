@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Web-search-Job</title>
+    <title>Company</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -19,52 +19,47 @@
             outline: none;
         }
 
-         .img-logo{
-             width: 100%;
-             height: auto;
-             object-fit: cover;
-         }
+        .img-logo{
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
 <!-- Begin navbar section -->
 <div th:replace="~{layout :: page_navbar}"></div>
-
-
-<div class="container-fluid">
-    <div class="row bg-custom text-white">
-            <div class="my-5 offset-2 col-md-6 offset-md-3">
-                <div class="input-group">
-                    <!-- Dropdown for City -->
-                    <select class="form-select col" aria-label="City" th:value="${city}">
-                        <option class="text-center" value="4" th:selected="${city == '4'}">Thành Phố</option>
-                        <option class="text-center" value="1" th:selected="${city == '1'}">Hà Nội</option>
-                        <option class="text-center" value="2" th:selected="${city == '2'}">Đà Nẵng</option>
-                        <option class="text-center" value="3" th:selected="${city == '3'}">Hồ Chí Minh</option>
-                    </select>
-
-                    <!-- Input for Job Search -->
-                    <input type="text" class="form-control input-large col w-50"
-                           placeholder="Tìm kiếm việc làm..." aria-label="Search"
-                           th:value="${search}" />
-
-                    <!-- Search Button -->
-                    <button class="btn btn-primary col-2" id="search-input" type="submit">Tìm kiếm</button>
-                </div>
-
+<div class="container text-center">
+    <div class="row">
+        <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E"  alt="Banner Company" >
+    </div>
+    <div class="row">
+        <div class="col-8 ms-n3">
+            <dt class="text-center text-danger">Thông Tin Công Ty</dt>
+            <div class="row border-danger border-top border-4 text-start">
+                <dt class="mt-3">Về Chúng Tôi</dt>
+                <p class="text-break" th:text="${company.getAbout()}"></p>
             </div>
-        <div class="row p-1 d-flex flex-row justify-content-around align-items-center text-center ">
-            <dt class="col-2">Suggested Skill: </dt>
-            <div class="col-1 border rounded">Java</div>
-            <div class="col-1 border rounded">Nodejs</div>
-            <div class="col-1 border rounded">ReactJs</div>
-            <div class="col-1 border rounded">Kotlin</div>
+        </div>
+        <div class="col-4">
+            <dt class="text-center text-secondary">Thông Tin Liên Hệ</dt>
+            <div class="row border-secondary border-top border-4 text-start">
+                <dt class="mt-1 text-secondary">Website</dt>
+                <a class="text-decoration-none ml-3" th:text="${company.getWebURL()}"></a>
+                <dt class="mt-1 text-secondary">Email</dt>
+                <p th:text="${company.getEmail()}"></p>
+                <dt class="mt-1 text-secondary">Địa Chỉ Công Ty</dt>
+                <p class="text-start" th:text="${company.getAddress()}"></p>
+            </div>
         </div>
     </div>
-    <!--  End header section -->
-    <!--    begin body section     -->
-    <h1 class="text-center">List Job</h1>
-    <div class="container text-start">
+
+    <div>
+        <a class="btn btn-info btn-lg" th:href="@{/jobs/new-job}">New Job</a>
+    </div>
+
+    <div class="row text-start">
+        <h1>Vị trí tuyển dụng</h1>
         <div class="card mb-3" th:each="job : ${jobs}">
             <div class=" row job">
                 <div class="col-10 job-container" th:attr="data-id=${job.getId()}">
@@ -91,30 +86,13 @@
                 </div>
                 <div class="col-2">
                     <div class="row w-100 h-100">
-                        <button class="btn btn-success apply-btn z-2" th:if="${!jobApplied.contains(job.getId())}">Apply</button>
-                        <button class="btn btn-success un-apply-btn z-2" th:unless="${!jobApplied.contains(job.getId())}">Un Apply</button>
+                        <button class="btn btn-danger delete-btn z-2">Delete job</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="pagination justify-content-center align-items-center">
-        <ul class="pagination">
-            <li th:classappend="${jobs.hasPrevious()} ? 'page-item' : 'page-item disabled'">
-                <a th:href="@{/(page=${jobs.number - 1})}" class="page-link">Previous</a>
-            </li>
-            <li th:each="i : ${#numbers.sequence(0, jobs.totalPages - 1)}" th:classappend="${i == jobs.number} ? 'page-item active' : 'page-item'">
-                <a th:href="@{/(page=${i})}" class="page-link" th:text="${i + 1}">1</a>
-            </li>
-            <li th:classappend="${jobs.hasNext()} ? 'page-item' : 'page-item disabled'">
-                <a th:href="@{/(page=${jobs.number + 1})}" class="page-link">Next</a>
-            </li>
-        </ul>
-    </div>
-    <!--  End body section -->
 </div>
-
-
 <footer th:replace="~{layout :: page_footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
@@ -134,20 +112,11 @@
                 $(this).css('background-color', '');
             }
         );
-        $('.apply-btn').click(function() {
+        $('.delete-btn').click(function() {
             let jobId = $(this).closest('.job').find('.job-id').val();
-            window.location.href = 'jobs/apply/' + jobId;
+            window.location.href = '/jobs/delete/' + jobId;
         });
 
-        $('.un-apply-btn').click(function() {
-            let jobId = $(this).closest('.job').find('.job-id').val();
-            window.location.href = 'jobs/un-apply/' + jobId;
-        });
-
-        $('#search-input').click(function() {
-            let search = $('input').val();
-            window.location.href = '?search=' + search+'&city='+$('select').val();
-        });
     });
 </script>
 </body>

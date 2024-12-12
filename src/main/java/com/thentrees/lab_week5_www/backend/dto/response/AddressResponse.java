@@ -2,6 +2,7 @@ package com.thentrees.lab_week5_www.backend.dto.response;
 
 import com.thentrees.lab_week5_www.backend.models.Candidate;
 import com.thentrees.lab_week5_www.backend.models.Company;
+import com.thentrees.lab_week5_www.backend.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,5 @@ public class AddressResponse {
     private Short country;
     private String street;
     private String number;
-    private Candidate candidate;
-    private Company company;
+    private User user;
 }

@@ -24,4 +24,7 @@ public interface ICandidateService {
     Candidate getCandidateById(Long id);
 
     Address getAddressByCanId(Long id);
+
+    Candidate login(String phone, String password);
+
 }

@@ -25,8 +25,7 @@ public class AddressMapper {
                 .country(address.getCountry())
                 .street(address.getStreet())
                 .number(address.getNumber())
-                .candidate(address.getCandidate())
-                .company(address.getCompany())
+                .user(address.getUser())
                 .build();
     }
 }

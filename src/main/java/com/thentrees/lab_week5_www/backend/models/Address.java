@@ -11,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = {"candidate", "company"})
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +32,9 @@ public class Address {
     @Column(columnDefinition = "varchar(20)")
     private String number;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "address")
-    private Candidate candidate;
-
-    @OneToOne(mappedBy = "address")
-    private Company company;
+    private User user;
 
     @Override
     public String toString() {
