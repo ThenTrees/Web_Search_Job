@@ -34,7 +34,6 @@
         <h2 class="text-center mb-4">Edit Profile</h2>
         <form th:action="@{/api/v1/candidates/update}" th:object="${candidate}" method="post">
             <input type="hidden" th:field="*{id}">
-
             <!-- Personal Details Section -->
             <h5 class="mb-3">Personal Details</h5>
             <div class="mb-3">

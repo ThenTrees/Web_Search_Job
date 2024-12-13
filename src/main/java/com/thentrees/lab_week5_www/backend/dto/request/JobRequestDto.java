@@ -27,6 +27,6 @@ public class JobRequestDto {
     private Long companyId;
     private int level;
 //    private List<JobSkill> jobSkills;
-    private Set<String> skills;
-    private Set<CandidateJob> candidateJobs;
+    private List<String> skills;
+    private List<CandidateJob> candidateJobs;
 }

@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +10,7 @@
 </head>
 <body>
 <div th:replace="~{layout :: page_navbar}"></div>
-<div class="container mt-5">
+<div class="container mt-5" sec:authorize="isAuthenticated()">
     <h1 class="text-center mb-4">Đăng Tin Tuyển Dụng</h1>
     <form th:action="@{/api/v1/hrs/new-job}" th:method="post">
         <!-- Job Title -->
@@ -38,14 +39,19 @@
         <!-- skill -->
         <div class="mb-3">
             <label for="jobSkills" class="form-label">Kỹ năng yêu cầu</label>
-            <select class="form-select" id="jobSkills" name="skills" multiple required>
-                <option value="Java">Java</option>
-                <option value="Spring">Spring</option>
-                <option value="SQL">SQL</option>
-                <option value="Docker">Docker</option>
-                <option value="React">React</option>
+            <select
+                    class="form-select p-1"
+                    id="jobSkills"
+                    name="skills"
+                    multiple
+                    required
+                    aria-describedby="skillsHelp">
+                <option th:each="skill : ${skills}"
+                        th:value="${skill.getSkillName()}"
+                        th:text="${skill.getSkillName()}">
+                </option>
             </select>
-            <small class="form-text text-muted">Tìm kiếm hoặc giữ Ctrl để chọn nhiều kỹ năng.</small>
+            <small id="skillsHelp" class="form-text text-muted">Tìm kiếm hoặc giữ Ctrl để chọn nhiều kỹ năng.</small>
         </div>
 
         <!-- Salary -->
@@ -58,6 +64,7 @@
     </form>
 </div>
 <div th:replace="~{layout :: page_footer}"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>

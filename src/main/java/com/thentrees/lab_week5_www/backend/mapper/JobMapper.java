@@ -16,4 +16,14 @@ public class JobMapper {
                 .level(SkillLevel.fromValue(requestDto.getLevel()))
                 .build();
     }
+//    public Job updateJob(Job job,JobRequestDto requestDto) {
+//        return Job.builder()
+//                .name(requestDto.getName())
+//                .description(requestDto.getDescription())
+//                .salary(requestDto.getSalary())
+//                .candidateJobs(requestDto.getCandidateJobs())
+//                .level(SkillLevel.fromValue(requestDto.getLevel()))
+//                .build();
+//    }
+
 }

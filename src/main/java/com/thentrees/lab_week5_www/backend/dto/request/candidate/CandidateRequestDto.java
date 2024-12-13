@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -34,7 +35,9 @@ public class CandidateRequestDto {
     @NotNull(message = "Address is required")
     private Address address;
 
-    private List<CandidateSkillRequestDto> candidateSkills;
-    private List<ExperienceRequestDto> experiences;
+    private Set<String> skills;
+
+//    private List<CandidateSkillRequestDto> candidateSkills;
+//    private List<ExperienceRequestDto> experiences;
 
 }

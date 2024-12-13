@@ -14,6 +14,8 @@ import lombok.*;
 @Builder
 public class JobSkill {
     @EmbeddedId
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private JobSkillId id;
 
     @Column(columnDefinition = "varchar(1000)", name = "more_infos")
@@ -29,7 +31,7 @@ public class JobSkill {
     private Skill skill;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("jobId")
     @JoinColumn(name = "job_id")
     private Job job;

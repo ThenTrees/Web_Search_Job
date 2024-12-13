@@ -5,6 +5,8 @@ import com.thentrees.lab_week5_www.backend.dto.request.candidate.CandidateUpdate
 import com.thentrees.lab_week5_www.backend.dto.response.CandidateResponseDto;
 import com.thentrees.lab_week5_www.backend.models.Address;
 import com.thentrees.lab_week5_www.backend.models.Candidate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,7 +21,8 @@ public interface ICandidateService {
     @Transactional
     void deleteCandidate(Long id);
 
-    List<CandidateResponseDto> getAllCandidates();
+//    List<CandidateResponseDto> getAllCandidates();
+    Page<Candidate> getAllCandidates(Pageable pageable, String search, String city);
 
     Candidate getCandidateById(Long id);
 

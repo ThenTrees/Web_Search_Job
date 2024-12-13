@@ -35,7 +35,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 return;
             } else if (authority.getAuthority().equals("ROLE_COMPANY")) {
                 // Nếu là CANDIDATE, chuyển hướng đến trang candidate.html
-                response.sendRedirect("/companies/my");
+                response.sendRedirect("/companies/show");
                 return;
             }
         }

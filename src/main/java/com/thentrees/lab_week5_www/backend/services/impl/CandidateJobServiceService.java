@@ -47,12 +47,12 @@ public class CandidateJobServiceService implements ICandidateJobService {
 
     @Override
     public void removeCandidateFromJob(Long candidateId, Long jobId) {
-        CandidateJob candidateJob = candidateJobRepository.findById(new CandidateJobId(candidateId, jobId)).orElseThrow(
+        CandidateJob candidateJob = candidateJobRepository.findById(CandidateJobId.builder()
+                .candidateId(candidateId)
+                .jobId(jobId).build()).orElseThrow(
                 ()-> new ResourceNotFoundException("CandidateJob with candidateId: "+candidateId+" and jobId: "+jobId+" not found")
         );
-        if(candidateJob != null){
-            candidateJobRepository.delete(candidateJob);
-        }
+        candidateJobRepository.delete(candidateJob);
     }
 
     @Override

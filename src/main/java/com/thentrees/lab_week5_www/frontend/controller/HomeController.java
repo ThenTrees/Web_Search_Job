@@ -1,10 +1,11 @@
 package com.thentrees.lab_week5_www.frontend.controller;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.thentrees.lab_week5_www.backend.dto.request.CompanyRequestDto;
 import com.thentrees.lab_week5_www.backend.models.*;
 import com.thentrees.lab_week5_www.backend.services.ICandidateJobService;
+import com.thentrees.lab_week5_www.backend.services.ICandidateService;
 import com.thentrees.lab_week5_www.backend.services.IJobService;
+import com.thentrees.lab_week5_www.backend.services.ISkillService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,8 @@ import java.util.List;
 public class HomeController {
     private final IJobService jobService;
     private final ICandidateJobService candidateJobService;
-
+    private final ICandidateService candidateService;
+    private final ISkillService skillService;
     @GetMapping("/admin")
     public String showAdminPage() {
         return "home-admin";
@@ -40,10 +42,10 @@ public class HomeController {
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "") String city,
             ModelAndView mv) {
-        log.info("Show home page.");
         // search job by title and city
         ArrayList<Long> jobApplied = new ArrayList<Long>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if(!authentication.getName().equalsIgnoreCase("anonymousUser")){
             User candidate = (User) authentication.getPrincipal();
             List<CandidateJob> candidateJobs = candidateJobService.getAllCandidateJobByCandidateId(candidate.getId());
@@ -55,42 +57,17 @@ public class HomeController {
         int numberElement = 3;
         Pageable pageable = PageRequest.of(page, numberElement); // 5 jobs per page
         Page<Job> jobs = jobService.getAllJobs(pageable, search, city);
+        mv.addObject("skills", skillService.getAllSkills());
         mv.addObject("jobs", jobs);
         mv.addObject("search", search);
         mv.addObject("city", city);
         mv.setViewName("/index");
         return mv;
     }
-
-    @GetMapping("/register-candidate")
-    public ModelAndView showRegisterForm(ModelAndView modelAndView) {
-        Candidate candidate = Candidate.builder()
-                .address(new Address())
-                .build();
-        modelAndView.addObject("candidate", candidate);
-        modelAndView.addObject("address", candidate.getAddress());
-        modelAndView.addObject("countries", CountryCode.values());
-        modelAndView.setViewName("auth/sign-up");
-        return modelAndView;
-    }
-
-    @GetMapping("/register-company")
-    public ModelAndView showRegisterCompanyForm(ModelAndView modelAndView) {
-        CompanyRequestDto company = new CompanyRequestDto();
-        company.setAddress(new Address());
-        modelAndView.addObject("company", company);
-        modelAndView.addObject("address", company.getAddress());
-        modelAndView.addObject("countries", CountryCode.values());
-        modelAndView.setViewName("auth/sign-up-company");
-        return modelAndView;
-    }
-
-
     @GetMapping("/profile")
     public ModelAndView showProfilePage(ModelAndView mv) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(!authentication.getAuthorities().contains("ROLE_COMPANY")) {
+        if(hasRole(authentication, "ROLE_COMPANY")) {
             Company company = (Company) authentication.getPrincipal();
             log.info("Company:::{}", company);
             if(company == null) {
@@ -99,19 +76,20 @@ public class HomeController {
             }
             mv.setViewName("redirect:/companies/my");
             return mv;
-        }
-
-        Candidate candidate = (Candidate) authentication.getPrincipal();
-        log.info("Candidate:::{}", candidate);
-        if(candidate == null) {
-            mv.setViewName("redirect:/login");
-            return mv;
-        }
+        } else if (hasRole(authentication, "ROLE_CANDIDATE")) {
+            Candidate candidate = (Candidate) authentication.getPrincipal();
+            log.info("Candidate:::{}", candidate);
+            if(candidate == null) {
+                mv.setViewName("redirect:/login");
+                return mv;
+            }
             mv.addObject("candidate", candidate);
             mv.addObject("address", candidate.getAddress());
             mv.addObject("countries", CountryCode.values());
             mv.setViewName("candidate/profile");
             return mv;
+        }
+        return mv;
     }
 
     @GetMapping("/login")
@@ -122,5 +100,10 @@ public class HomeController {
     @GetMapping("/apply")
     public String showApplyPage() {
        return "apply";
+    }
+
+    private boolean hasRole(Authentication authentication, String role) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(role));
     }
 }

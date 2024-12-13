@@ -7,19 +7,25 @@ import com.thentrees.lab_week5_www.backend.dto.request.candidate.CandidateUpdate
 import com.thentrees.lab_week5_www.backend.dto.response.CandidateResponseDto;
 import com.thentrees.lab_week5_www.backend.enums.RoleType;
 import com.thentrees.lab_week5_www.backend.exception.ResourceNotFoundException;
+import com.thentrees.lab_week5_www.backend.ids.CandidateSkillId;
+import com.thentrees.lab_week5_www.backend.ids.JobSkillId;
 import com.thentrees.lab_week5_www.backend.mapper.CandidateMapper;
 import com.thentrees.lab_week5_www.backend.models.*;
 import com.thentrees.lab_week5_www.backend.repositories.*;
+import com.thentrees.lab_week5_www.backend.repositories.specification.CandidateSpecification;
+import com.thentrees.lab_week5_www.backend.repositories.specification.JobSpecification;
 import com.thentrees.lab_week5_www.backend.services.ICandidateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,21 +36,17 @@ public class CandidateServiceImpl implements ICandidateService {
     private final CandidateMapper candidateMapper;
     private final CandidateSkillRepository candidateSkillRepository;
     private final SkillRepository skillRepository;
-    private final ExperienceRepository experienceRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AddressRepository addressRepository;
+
     @Override
     public Candidate createCandidate(CandidateRequestDto candidateRequestDto) {
-        log.info("Create candidate");
         if (checkPhoneAndEmailExists(candidateRequestDto.getPhone(), candidateRequestDto.getEmail())) {
             throw new RuntimeException("Phone or email already exists");
         }
-
         addressRepository.save(candidateRequestDto.getAddress());
-
         Candidate candidate = candidateMapper.toCandidate(candidateRequestDto);
-
         Role role = roleRepository.findById(1L).orElseThrow(
                 () -> new RuntimeException("Role not found")
         );
@@ -52,37 +54,25 @@ public class CandidateServiceImpl implements ICandidateService {
         candidate.setPassword(passwordEncoder.encode(candidateRequestDto.getPassword()));
         // skill
         List<CandidateSkill> skillsOfCandidate = new ArrayList<>();
-        if(candidateRequestDto.getCandidateSkills()!=null) {
-            for (CandidateSkillRequestDto candidateSkillRequestDto : candidateRequestDto.getCandidateSkills()) {
-                Skill skill = skillRepository.findById(candidateSkillRequestDto.getSkillId()).orElseThrow(
-                        () -> new RuntimeException("Skill not found")
-                );
-                CandidateSkill candidateSkill = new CandidateSkill();
-                candidateSkill.setCandidate(candidate);
-                candidateSkill.setSkill(skill);
-                candidateSkill.setMoreInfo(candidateSkillRequestDto.getMoreInfo());
-                candidateSkill.setSkillLevel(candidateSkillRequestDto.getSkillLevel());
-                skillsOfCandidate.add(candidateSkill);
-            }
-        }
-        List<Experience> experiences = new ArrayList<>();
-        if (candidateRequestDto.getExperiences() != null) {
-            for (ExperienceRequestDto experienceRequestDto : candidateRequestDto.getExperiences()) {
-                Experience experience = new Experience();
-                experience.setCandidate(candidate);
-                experience.setCompanyName(experienceRequestDto.getCompanyName());
-                experience.setFromDate(experienceRequestDto.getFromDate());
-                experience.setToDate(experienceRequestDto.getToDate());
-                experience.setRole(experienceRequestDto.getRole());
-                experience.setWorkDescription(experienceRequestDto.getWorkDescription());
-                experiences.add(experience);
-            }
-        }
 
-        log.info("Create candidate:::{}",candidate);
+        Set<String> skills = candidateRequestDto.getSkills();
+        for (String skillName : skills) {
+            Skill skill = skillRepository.findBySkillName(skillName).orElseThrow(
+                    ()-> new ResourceNotFoundException("Skill with name: "+skillName+" not found"));
+            //chac la loi cho nay
+            CandidateSkillId candidateSkillId = new CandidateSkillId();
+            candidateSkillId.setCandidateId(candidate.getId());
+            candidateSkillId.setSkillId(skill.getId());
+            CandidateSkill candidateSkill = CandidateSkill.builder()
+                    .id(candidateSkillId)
+                    .candidate(candidate)
+                    .skill(skill)
+                    .build();
+            skillsOfCandidate.add(candidateSkill);
+        }
+        log.info("Create candidate:::{}",candidate.toString());
         candidateRepository.save(candidate);
         candidateSkillRepository.saveAll(skillsOfCandidate);
-        experienceRepository.saveAll(experiences);
         log.info("Create candidate success");
         return candidate;
     }
@@ -119,13 +109,34 @@ public class CandidateServiceImpl implements ICandidateService {
     }
 
     @Override
-    public List<CandidateResponseDto> getAllCandidates() {
-        List<Candidate> candidates = candidateRepository.findAll();
-        List<CandidateResponseDto> candidateResponseDtos = new ArrayList<>();
-        for (Candidate candidate : candidates) {
-            candidateResponseDtos.add(candidateMapper.toCandidateResponseDto(candidate));
+    public Page<Candidate> getAllCandidates(Pageable pageable, String name, String city) {
+        switch (city){
+            case "1":
+                city = "Ha Noi";
+                break;
+            case "2":
+                city = "Da Nang";
+                break;
+            case "3":
+                city = "Ho Chi Minh";
+                break;
+            case "4":
+                city = "";
+                break;
         }
-        return candidateResponseDtos;
+        // Tạo Specification
+        Specification<Candidate> specification = Specification.where(null);
+        // Thêm điều kiện tìm theo tên nếu có
+        if (name != null && !name.isEmpty()) {
+            specification = specification.and(CandidateSpecification.hasName(name)).or(CandidateSpecification.hasSkill(name));
+        }
+        // Thêm điều kiện tìm theo thành phố nếu có
+        if (!city.isEmpty()) {
+            specification = specification.and(CandidateSpecification.hasCity(city));
+        }
+        // Tạo Pageable mới với Sort theo thời gian tạo (giả sử trường là createdAt)
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return candidateRepository.findAll(specification, sortedPageable);
     }
 
     @Override

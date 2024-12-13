@@ -21,12 +21,15 @@ public class Candidate extends User {
     @Column(columnDefinition = "varchar(255)")
     private String fullName;
 
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CandidateSkill> candidateSkills;
 
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "candidate",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Experience> experiences;
 
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "candidate",  cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CandidateJob> candidateJobs;
 }

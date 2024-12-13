@@ -17,13 +17,13 @@ import com.thentrees.lab_week5_www.backend.services.IJobService;
 import com.thentrees.lab_week5_www.backend.services.IJobSkillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,40 +36,73 @@ public class JobService implements IJobService {
     private final IJobSkillService jobSkillService;
     private final JobSkillRepository jobSkillRepository;
 
-    @Override
-    public Job addJob(JobRequestDto jobRequestDto) {
-        Job job = jobMapper.toJob(jobRequestDto);
-        Company company = companyRepository.findById(jobRequestDto.getCompanyId()).orElseThrow(
-                ()-> new ResourceNotFoundException("Company with id: "+jobRequestDto.getCompanyId()+" not found"));
-        job.setCompany(company);
-        // lay danh sach skill tu request
-        Set<JobSkill> jobSkills = new HashSet<>();
-        Set<String> skills = jobRequestDto.getSkills();
-        jobRepository.save(job);
-        for (String skillName : skills) {
-            Skill skill = skillRepository.findBySkillName(skillName).orElseThrow(
-                    ()-> new ResourceNotFoundException("Skill with name: "+skillName+" not found"));
 
+    @Override
+    public void addJob(JobRequestDto jobRequestDto) {
+        // Chuyển đổi từ JobRequestDto thành Job entity
+        Job job = jobMapper.toJob(jobRequestDto);
+
+        // Tìm kiếm công ty từ repository và gán cho job
+        Company company = companyRepository.findById(jobRequestDto.getCompanyId()).orElseThrow(
+                () -> new ResourceNotFoundException("Company with id: " + jobRequestDto.getCompanyId() + " not found"));
+        job.setCompany(company);
+
+        // Lấy danh sách các skill từ request
+        List<JobSkill> jobSkills = new ArrayList<>();
+        List<String> skills = jobRequestDto.getSkills();
+
+        // Lưu job vào cơ sở dữ liệu trước
+        jobRepository.save(job);
+
+        // Lặp qua danh sách skill và tạo các JobSkill
+        for (String skillName : skills) {
+            // Tìm kiếm skill từ repository
+            Skill skill = skillRepository.findBySkillName(skillName).orElseThrow(
+                    () -> new ResourceNotFoundException("Skill with name: " + skillName + " not found"));
+
+            // Tạo JobSkillId cho JobSkill
             JobSkillId jobSkillId = new JobSkillId();
             jobSkillId.setJobId(job.getId());
             jobSkillId.setSkillId(skill.getId());
 
-            JobSkill jobSkill = JobSkill.builder()
-                    .id(jobSkillId)
-                    .job(job)
-                    .skill(skill)
-                    .build();
-            jobSkills.add(jobSkill);
+            // Kiểm tra nếu JobSkill đã tồn tại trong cơ sở dữ liệu
+            Optional<JobSkill> existingJobSkill = jobSkillRepository.findById(jobSkillId);
+            if (existingJobSkill.isEmpty()) {
+                // Nếu JobSkill chưa tồn tại, tạo mới JobSkill
+                JobSkill jobSkill = JobSkill.builder()
+                        .id(jobSkillId)
+                        .job(job)
+                        .skill(skill)
+                        .build();
+                jobSkills.add(jobSkill);
+            }
         }
-        jobSkillRepository.saveAll(jobSkills);
+
+        // Lưu tất cả JobSkill vào cơ sở dữ liệu
+        if (!jobSkills.isEmpty()) {
+            jobSkillRepository.saveAll(jobSkills);
+        }
+
+        // Gán danh sách JobSkill cho job và lưu lại
         job.setJobSkills(jobSkills);
-        return job;
+        jobRepository.save(job);  // Lưu lại job với danh sách JobSkill đã được gán
     }
+
+
 
     @Override
     public void updateJob(Long id, JobRequestDto jobRequestDto) {
-
+        // Tìm job theo id từ cơ sở dữ liệu
+        Job job = jobRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not found job"));
+        // Cập nhật các trường thông tin của job từ jobRequestDto (Giữ lại các mối quan hệ cũ)
+        job.setName(jobRequestDto.getName());
+        job.setDescription(jobRequestDto.getDescription());
+        job.setSalary(jobRequestDto.getSalary());
+        // Lưu lại job vào cơ sở dữ liệu
+        jobRepository.save(job);
     }
+
+
 
     @Override
     public void deleteJob(Long id) {
@@ -85,6 +118,7 @@ public class JobService implements IJobService {
     @Override
     public Page<Job> getAllJobs(Pageable pageable, String name, String city) {
 
+        // Xử lý giá trị city
         switch (city){
             case "1":
                 city = "Ha Noi";
@@ -99,7 +133,7 @@ public class JobService implements IJobService {
                 city = "";
                 break;
         }
-
+        // Tạo Specification
         Specification<Job> specification = Specification.where(null);
         // Thêm điều kiện tìm theo tên nếu có
         if (name != null && !name.isEmpty()) {
@@ -109,9 +143,12 @@ public class JobService implements IJobService {
         if (!city.isEmpty()) {
             specification = specification.and(JobSpecification.hasCity(city));
         }
-        return jobRepository.findAll(specification, pageable);
-
+        // Tạo Pageable mới với Sort theo thời gian tạo (giả sử trường là createdAt)
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("createdAt")));
+        // Trả về các kết quả tìm kiếm đã được sắp xếp
+        return jobRepository.findAll(specification, sortedPageable);
     }
+
 
 
     @Override

@@ -19,11 +19,11 @@
             outline: none;
         }
 
-         .img-logo{
-             width: 100%;
-             height: auto;
-             object-fit: cover;
-         }
+        .img-logo{
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -33,32 +33,31 @@
 
 <div class="container-fluid">
     <div class="row bg-custom text-white">
-            <div class="my-5 offset-2 col-md-6 offset-md-3">
-                <div class="input-group">
-                    <!-- Dropdown for City -->
-                    <select class="form-select col" aria-label="City" th:value="${city}">
-                        <option class="text-center" value="4" th:selected="${city == '4'}">Thành Phố</option>
-                        <option class="text-center" value="1" th:selected="${city == '1'}">Hà Nội</option>
-                        <option class="text-center" value="2" th:selected="${city == '2'}">Đà Nẵng</option>
-                        <option class="text-center" value="3" th:selected="${city == '3'}">Hồ Chí Minh</option>
-                    </select>
+        <div class="my-5 offset-2 col-md-6 offset-md-3">
+            <div class="input-group">
+                <!-- Dropdown for City -->
+                <select class="form-select col" aria-label="City" th:value="${city}">
+                    <option class="text-center" value="4" th:selected="${city == '4'}">Thành Phố</option>
+                    <option class="text-center" value="1" th:selected="${city == '1'}">Hà Nội</option>
+                    <option class="text-center" value="2" th:selected="${city == '2'}">Đà Nẵng</option>
+                    <option class="text-center" value="3" th:selected="${city == '3'}">Hồ Chí Minh</option>
+                </select>
 
-                    <!-- Input for Job Search -->
-                    <input type="text" class="form-control input-large col w-50"
-                           placeholder="Tìm kiếm việc làm..." aria-label="Search"
-                           th:value="${search}" />
+                <!-- Input for Job Search -->
+                <input type="text" class="form-control input-large col w-50"
+                       placeholder="Tìm kiếm việc làm..." aria-label="Search"
+                       th:value="${search}" />
 
-                    <!-- Search Button -->
-                    <button class="btn btn-primary col-2" id="search-input" type="submit">Tìm kiếm</button>
-                </div>
-
+                <!-- Search Button -->
+                <button class="btn btn-primary col-2" id="search-input" type="submit">Tìm kiếm</button>
             </div>
-        <div class="row p-1 d-flex flex-row justify-content-around align-items-center text-center ">
+
+        </div>
+        <div class="row p-1 d-flex flex-row justify-content-around align-items-center text-center">
             <dt class="col-2">Suggested Skill: </dt>
-            <div class="col-1 border rounded">Java</div>
-            <div class="col-1 border rounded">Nodejs</div>
-            <div class="col-1 border rounded">ReactJs</div>
-            <div class="col-1 border rounded">Kotlin</div>
+            <div class="col d-flex flex-row flex-wrap justify-content-start align-items-center gap-2">
+                <div th:each="skill : ${skills}" class="border rounded px-2" th:text="${skill.getSkillName()}"></div>
+            </div>
         </div>
     </div>
     <!--  End header section -->
@@ -69,9 +68,6 @@
             <div class=" row job">
                 <div class="col-10 job-container" th:attr="data-id=${job.getId()}">
                     <div class="row">
-                        <div class="col-md-3 d-flex justify-content-center align-items-center">
-                            <img class="rounded mx-auto d-block img-logo" src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/239953985_4642774182453168_3553111685496521535_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEPfIIDCXw1K9tfqYo1cF_v7orsgrxVoPbuiuyCvFWg9kAEyQpv3vbN7mz9oZWZRm-Z4hsZldBBZI2G7PnDLyOa&_nc_ohc=hsQ3cdq0raYQ7kNvgHIaooK&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=AAXlZt2pBWSK-LXegmuMnAk&oh=00_AYC2duzjCMnDu_MaQfnuhiWIUSMxPbvO7V_uWusVB4ixag&oe=6753018E" alt="logo company" >
-                        </div>
                         <div class="col-md-7">
                             <div class="card-body">
                                 <input type="hidden" class="job-id" th:value="${job.getId()}">
@@ -84,7 +80,7 @@
                                         <span th:text="${jobSkill.getSkill().getSkillName()}" style="color: #154bb4"></span>
                                     </div>
                                 </div>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                <p class="card-text"><small class="text-muted" th:text="${job.getCreatedAt()}"></small></p>
                             </div>
                         </div>
                     </div>

@@ -12,7 +12,10 @@
     <div class="row bg-light text-white d-flex justify-content-around align-items-center p-4" th:fragment="page_navbar">
         <div class="col-md-6">
             <div class="row d-flex justify-content-start align-items-center ">
-                <a class="col-md-2 text-decoration-none" href="/">Trang Chủ</a>
+                <a class="col-md-2 text-decoration-none"
+                   th:href="${#authorization.expression('hasRole(''ROLE_COMPANY'')') ? '/companies/show' : '/'}">
+                    Trang Chủ
+                </a>
                 <a class="col-md-2 text-decoration-none" href="/companies">Công Ty IT</a>
             </div>
         </div>
@@ -23,8 +26,8 @@
             </div>
             <div class="row d-flex justify-content-end align-items-center" sec:authorize="isAnonymous()"> <!-- check co dang nhap hay chua, neu chua thi co nut dang nhap va dang ki -->
                 <a href="/login" class="text-decoration-none col-md-2 btn btn-primary mx-3">Sign In</a>
-                <a  href="/register-candidate" class="text-decoration-none col-md-2 mx-3 btn btn-primary ">Sign up Candidate</a>
-                <a  href="/register-company" class="text-decoration-none col-md-2 btn btn-primary ">Sign up Company</a>
+                <a  href="/api/v1/auth/register-candidate" class="text-decoration-none col-md-2 mx-3 btn btn-primary ">Sign up Candidate</a>
+                <a  href="/api/v1/auth/register-company" class="text-decoration-none col-md-2 btn btn-primary ">Sign up Company</a>
             </div>
         </div>
     </div>

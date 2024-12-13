@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IJobService {
     @Transactional
-    Job addJob(JobRequestDto jobRequestDto);
+    void addJob(JobRequestDto jobRequestDto);
 
     @Transactional
     void updateJob(Long id, JobRequestDto jobRequestDto);

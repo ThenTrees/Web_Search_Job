@@ -15,9 +15,22 @@ spring:
       format_sql: true
     generate-ddl: true
     show-sql: false
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: thienni198@gmail.com
+    password: qunt csvp cvcl tcys
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    protocol: smtp
 api:
   prefix: /api/v1
+
 
 logging:
   level:
