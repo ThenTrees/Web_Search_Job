@@ -11,7 +11,10 @@
 <body>
     <div class="row bg-light text-white d-flex justify-content-around align-items-center p-4" th:fragment="page_navbar">
         <div class="col-md-6">
-            <div class="row d-flex justify-content-start align-items-center ">
+            <div class="row d-flex justify-content-start align-items-center">
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/admin}">Dashboard</a>
+                </div>
                 <a class="col-md-2 text-decoration-none"
                    th:href="${#authorization.expression('hasRole(''ROLE_COMPANY'')') ? '/companies/show' : '/'}">
                     Trang Chủ

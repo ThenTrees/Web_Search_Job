@@ -3,7 +3,6 @@ package com.thentrees.lab_week5_www.frontend.controller;
 import com.neovisionaries.i18n.CountryCode;
 import com.thentrees.lab_week5_www.backend.models.*;
 import com.thentrees.lab_week5_www.backend.services.ICandidateJobService;
-import com.thentrees.lab_week5_www.backend.services.ICandidateService;
 import com.thentrees.lab_week5_www.backend.services.IJobService;
 import com.thentrees.lab_week5_www.backend.services.ISkillService;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +28,8 @@ import java.util.List;
 public class HomeController {
     private final IJobService jobService;
     private final ICandidateJobService candidateJobService;
-    private final ICandidateService candidateService;
+    final int NUMBER_ELEMENT = 3;
     private final ISkillService skillService;
-    @GetMapping("/admin")
-    public String showAdminPage() {
-        return "home-admin";
-    }
 
     @GetMapping({"/",""})
     public ModelAndView showHomePage(
@@ -54,8 +49,8 @@ public class HomeController {
             }
         }
         mv.addObject("jobApplied", jobApplied);
-        int numberElement = 3;
-        Pageable pageable = PageRequest.of(page, numberElement); // 5 jobs per page
+
+        Pageable pageable = PageRequest.of(page,NUMBER_ELEMENT); // 5 jobs per page
         Page<Job> jobs = jobService.getAllJobs(pageable, search, city);
         mv.addObject("skills", skillService.getAllSkills());
         mv.addObject("jobs", jobs);

@@ -38,20 +38,21 @@
 <div th:replace="~{layout :: page_navbar}"></div>
 <div class="container text-center p-3">
 <!--  find company section -->
-  <div class="input-group mb-3 border border-danger rounded-3 input-large row">
-    <div class="col-2">
-      <select class="form-select" aria-label="City">
-        <option selected>City</option>
-        <option value="1">Ha Noi</option>
-        <option value="2">Da Nang</option>
-        <option value="3">Ho Chi Minh</option>
+  <div class="row p-3">
+    <div class="input-group">
+      <!-- Dropdown for City -->
+      <select class="form-select col" aria-label="City" th:value="${city}">
+        <option class="text-center" value="4" th:selected="${city == '4'}">Thành Phố</option>
+        <option class="text-center" value="1" th:selected="${city == '1'}">Hà Nội</option>
+        <option class="text-center" value="2" th:selected="${city == '2'}">Đà Nẵng</option>
+        <option class="text-center" value="3" th:selected="${city == '3'}">Hồ Chí Minh</option>
       </select>
-    </div>
-    <div class="col-8">
-      <input type="text" class="form-control" placeholder="Search">
-    </div>
-    <div  class="col-2">
-      <button class="btn btn-success" type="submit">Search</button>
+      <!-- Input for Job Search -->
+      <input type="text" class="form-control input-large col w-50"
+             placeholder="Nhập tên công ty cần tìm ..." aria-label="Search"
+             th:value="${search}" />
+      <!-- Search Button -->
+      <button class="btn btn-primary col-2" id="search-input" type="submit">Tìm kiếm</button>
     </div>
   </div>
 <!--  filter company section-->
@@ -60,7 +61,7 @@
         <dt>Cong Ty Hang Dau</dt>
       </div>
       <div class="col-6 p-3 border-start border-danger tab-company">
-        <dt>Cong Ty Dang Cho Don Ban</dt>
+        <dt><a class="text-decoration-none text-black" href="#companyForYou">Cong Ty Dang Cho Don Ban</a></dt>
       </div>
   </div>
   <dt class="text-start p-3">Cong Ty Hang Dau</dt>
@@ -118,7 +119,7 @@
         <span class="carousel-control-next-icon"></span>
       </button>
     </div>
-  <dt class="text-start p-3">Cong Ty Danh Cho Ban</dt>
+  <dt class="text-start p-3" id="companyForYou">Cong Ty Danh Cho Ban</dt>
 <!--  list company section -->
   <div class="d-flex flex-row">
     <div class="row p-2 company-container" th:each="company : ${companies}" th:attr="data-id=${company.getId()}">
@@ -133,10 +134,22 @@
       </div>
     </div>
   </div>
-
+  <div class="pagination justify-content-center align-items-center">
+    <ul class="pagination">
+      <li th:classappend="${companies.hasPrevious()} ? 'page-item' : 'page-item disabled'">
+        <a th:href="@{/(page=${companies.number - 1})}" class="page-link">Previous</a>
+      </li>
+      <li th:each="i : ${#numbers.sequence(0, companies.totalPages - 1)}" th:classappend="${i == companies.number} ? 'page-item active' : 'page-item'">
+        <a th:href="@{/(page=${i})}" class="page-link" th:text="${i + 1}">1</a>
+      </li>
+      <li th:classappend="${companies.hasNext()} ? 'page-item' : 'page-item disabled'">
+        <a th:href="@{/(page=${companies.number + 1})}" class="page-link">Next</a>
+      </li>
+    </ul>
+  </div>
   </div>
 <!-- Footer inclusion -->
-<div th:replace="~{layout :: page_footer}"></div>
+<footer th:replace="~{layout :: page_footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
   $(document).ready(function() {
@@ -156,6 +169,10 @@
               window.location.href = "/companies/"+companyId;
             }
     );
+    $('#search-input').click(function() {
+      let search = $('input').val();
+      window.location.href = '?search=' + search+'&city='+$('select').val();
+    });
   });
 </script>
 </body>

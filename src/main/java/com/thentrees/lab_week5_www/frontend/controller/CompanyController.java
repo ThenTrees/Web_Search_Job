@@ -75,9 +75,15 @@ public class CompanyController {
      */
 
     @GetMapping("")
-    public ModelAndView showListCompany(ModelAndView mv) {
+    public ModelAndView showListCompany(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "") String search,
+                                        @RequestParam(defaultValue = "") String city,
+                                        ModelAndView mv, Pageable pageable) {
         log.info("Show list company:::");
-        mv.addObject("companies", companyService.getAllCompanies());
+        Page<Company> companies = companyService.getAllCompanies(pageable, search, city);
+        mv.addObject("companies", companies);
+        mv.addObject("search", search);
+        mv.addObject("city", city);
         mv.setViewName("/list-company");
         return mv;
     }

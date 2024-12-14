@@ -9,13 +9,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-
+<div th:replace="~{layout :: page_navbar}"></div>
 <div class="container-fluid text-center p-4">
     <h1>Admin Manager</h1>
     <div class="row d-flex justify-content-center">
-        <a class="btn btn-primary col-3 mx-2" href="admin/companies">Company Manager</a>
-        <a class="btn btn-primary col-3 mx-2" href="admin/jobs">Job Manager</a>
-        <a class="btn btn-primary col-3 mx-2" href="admin/skills">Skill Manager</a>
+        <a class="btn btn-primary col-3 mx-2" th:href="@{admin/companies}">Company Manager</a>
+        <a class="btn btn-primary col-3 mx-2" th:href="@{admin/jobs}">Job Manager</a>
+        <a class="btn btn-primary col-3 mx-2" th:href="@{admin/skills}">Skill Manager</a>
+        <a class="btn btn-primary col-3 mx-2" th:href="@{admin/candidates}">Candidate Manager</a>
     </div>
 </div>
 

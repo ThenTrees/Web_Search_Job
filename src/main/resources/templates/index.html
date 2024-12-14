@@ -19,11 +19,6 @@
             outline: none;
         }
 
-        .img-logo{
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
     </style>
 </head>
 <body>
@@ -56,7 +51,7 @@
         <div class="row p-1 d-flex flex-row justify-content-around align-items-center text-center">
             <dt class="col-2">Suggested Skill: </dt>
             <div class="col d-flex flex-row flex-wrap justify-content-start align-items-center gap-2">
-                <div th:each="skill : ${skills}" class="border rounded px-2" th:text="${skill.getSkillName()}"></div>
+                <div th:each="skill : ${skills}" class="border rounded px-3 mx-2" th:text="${skill.getSkillName()}"></div>
             </div>
         </div>
     </div>
